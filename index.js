@@ -31,8 +31,6 @@ const gen6 = document.getElementById('gen6');
 const gen7 = document.getElementById('gen7');
 const gen8 = document.getElementById('gen8');
 
-const controller = new AbortController();
-
 gen1.addEventListener('click', function () {
   clearDOM();
   (start = 1), (pokemonCount = 151);
@@ -104,13 +102,14 @@ const createPokemonCard = (pokemon) => {
 
   const poke_types = pokemon.types.map((type) => type.type.name);
   const type = main_types.find((type) => poke_types.indexOf(type) === 0);
+  const typeUpper = type[0].toUpperCase() + type.slice(1);
   const type2 = main_types.find((type) => poke_types.indexOf(type) === 1);
   const color1 = colors[type];
   const color2 = colors[type2];
-  function displayType2(str, str2) {
+  function displayType2(str) {
     if (str === undefined) {
-      return (str = null);
-    } else return str;
+      return (str = 'Null');
+    } else return str[0].toUpperCase() + str.slice(1);
   }
 
   if (color2 != undefined) {
@@ -126,11 +125,10 @@ const createPokemonCard = (pokemon) => {
     <div class="info">
         <span class="number">#${id}</span>
         <h3 class="name">${name}</h3>
-        <small class="type">Type 1: <span>${type}</span> </small>
+        <small class="type">Type 1: <span>${typeUpper}</span> </small>
         <br>
         <small class="type" >Type 2: <span>${displayType2(
-          type2,
-          type
+          type2
         )} </span> </small>
     </div>
     `;
