@@ -1,4 +1,6 @@
 const pokeContainer = document.getElementById('poke-container');
+const form = document['form'];
+const input = form['input'];
 let pokemonCount = 151;
 let start = 1;
 const colors = {
@@ -92,6 +94,70 @@ const getPokemon = async (id) => {
   const data = await res.json();
   createPokemonCard(data);
 };
+
+const fetchPokemonByName = async () => {
+  clearDOM();
+  const name = input.value;
+  input.value = '';
+  await getPokemonByName(name);
+};
+
+const getPokemonByName = async (name) => {
+  const url = `https://pokeapi.co/api/v2/pokemon/${name}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  createSinglePokemonCard(data);
+};
+
+const createSinglePokemonCard = (pokemon) => {
+  const pokemonEl = document.createElement('div');
+  pokemonEl.classList.add('pokemon');
+
+  const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
+  const id = pokemon.id.toString().padStart(3, '0');
+
+  const poke_types = pokemon.types.map((type) => type.type.name);
+  const type = main_types.find((type) => poke_types.indexOf(type) === 0);
+  const typeUpper = type[0].toUpperCase() + type.slice(1);
+  const type2 = main_types.find((type) => poke_types.indexOf(type) === 1);
+  const color1 = colors[type];
+  const color2 = colors[type2];
+  function displayType2(str) {
+    if (str === undefined) {
+      return (str = 'Null');
+    } else return str[0].toUpperCase() + str.slice(1);
+  }
+
+  if (color2 != undefined) {
+    pokemonEl.style.backgroundImage = `linear-gradient(to bottom,${color1} , ${color2} )`;
+  } else pokemonEl.style.backgroundColor = color1;
+
+  const pokemonInnerHTML = `
+      <div class="img-container">
+          <img src="https://pokeres.bastionbot.org/images/pokemon/${
+            pokemon.id
+          }.png" alt="">
+      </div>
+      <div class="info">
+          <span class="number">#${id}</span>
+          <h3 class="name">${name}</h3>
+          <small class="type">Type 1: <span>${typeUpper}</span> </small>
+          <br>
+          <small class="type" >Type 2: <span>${displayType2(
+            type2
+          )} </span> </small>
+      </div>
+      `;
+
+  pokemonEl.innerHTML = pokemonInnerHTML;
+
+  pokeContainer.appendChild(pokemonEl);
+};
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  fetchPokemonByName();
+});
 
 const createPokemonCard = (pokemon) => {
   const pokemonEl = document.createElement('div');

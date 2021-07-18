@@ -75,3 +75,7 @@ h1 {
   justify-content: center;
   max-width: 1200px;
 }
+
+form {
+  margin-bottom: 10px;
+}
