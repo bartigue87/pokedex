@@ -1,5 +1,6 @@
 const pokeContainer = document.getElementById('poke-container');
-const pokemonCount = 251;
+let pokemonCount = 151;
+let start = 1;
 const colors = {
   fire: '#F08030',
   grass: '#78C850',
@@ -21,10 +22,68 @@ const colors = {
   ice: '#98D8D8',
 };
 
+const gen1 = document.getElementById('gen1');
+const gen2 = document.getElementById('gen2');
+const gen3 = document.getElementById('gen3');
+const gen4 = document.getElementById('gen4');
+const gen5 = document.getElementById('gen5');
+const gen6 = document.getElementById('gen6');
+const gen7 = document.getElementById('gen7');
+const gen8 = document.getElementById('gen8');
+
+const controller = new AbortController();
+
+gen1.addEventListener('click', function () {
+  clearDOM();
+  (start = 1), (pokemonCount = 151);
+  fetchPokemons();
+});
+gen2.addEventListener('click', function () {
+  clearDOM();
+  (start = 152), (pokemonCount = 251);
+  console.log(start, pokemonCount);
+  fetchPokemons();
+});
+gen3.addEventListener('click', function () {
+  clearDOM();
+  (start = 252), (pokemonCount = 386);
+  fetchPokemons();
+});
+gen4.addEventListener('click', function () {
+  clearDOM();
+  (start = 387), (pokemonCount = 493);
+  console.log(start, pokemonCount);
+  fetchPokemons();
+});
+gen5.addEventListener('click', function () {
+  clearDOM();
+  (start = 494), (pokemonCount = 649);
+  fetchPokemons();
+});
+gen6.addEventListener('click', function () {
+  clearDOM();
+  (start = 650), (pokemonCount = 721);
+  console.log(start, pokemonCount);
+  fetchPokemons();
+});
+gen7.addEventListener('click', function () {
+  clearDOM();
+  (start = 722), (pokemonCount = 809);
+  fetchPokemons();
+});
+gen8.addEventListener('click', function () {
+  clearDOM();
+  (start = 810), (pokemonCount = 898);
+  console.log(start, pokemonCount);
+  fetchPokemons();
+});
+
+console.log(start, pokemonCount);
+
 const main_types = Object.keys(colors);
 
 const fetchPokemons = async () => {
-  for (let i = 1; i <= pokemonCount; i++) {
+  for (let i = start; i <= pokemonCount; i++) {
     await getPokemon(i);
   }
 };
@@ -48,7 +107,6 @@ const createPokemonCard = (pokemon) => {
   const type2 = main_types.find((type) => poke_types.indexOf(type) === 1);
   const color1 = colors[type];
   const color2 = colors[type2];
-  console.log(color2);
   function displayType2(str, str2) {
     if (str === undefined) {
       return (str = null);
@@ -58,8 +116,6 @@ const createPokemonCard = (pokemon) => {
   if (color2 != undefined) {
     pokemonEl.style.backgroundImage = `linear-gradient(to bottom,${color1} , ${color2} )`;
   } else pokemonEl.style.backgroundColor = color1;
-
-  console.log(pokemonEl.style.backgroundColor);
 
   const pokemonInnerHTML = `
     <div class="img-container">
@@ -84,4 +140,7 @@ const createPokemonCard = (pokemon) => {
   pokeContainer.appendChild(pokemonEl);
 };
 
+function clearDOM() {
+  pokeContainer.querySelectorAll('*').forEach((n) => n.remove());
+}
 fetchPokemons();
